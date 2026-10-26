@@ -29,7 +29,7 @@ jobs:
         run: npm test
 
       - name: Build Docker Image
-        run: docker build -t fsexp9-1:latest .
+        run: docker build -t fsexp9-1:latest -f public/Dockerfile .
 
       - name: Verify Docker Image
         run: docker images fsexp9-1:latest
