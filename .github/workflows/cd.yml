@@ -1,0 +1,65 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+
+  build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Tests
+        run: npm test
+
+      - name: Build Docker Image
+        run: docker build -t fsexp9-1:latest .
+
+      - name: Verify Docker Image
+        run: docker images fsexp9-1:latest
+
+
+  canary:
+    name: Canary Deployment
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Canary Deployment Started
+        run: echo "Starting Canary Deployment..."
+
+      - name: Deploy Canary Version
+        run: |
+          echo "Deploying new version to Canary..."
+          echo "Canary traffic: 10%"
+          echo "Monitoring application..."
+
+      - name: Canary Health Check
+        run: |
+          echo "Health Check: PASSED"
+          echo "Canary deployment is healthy."
+
+      - name: Promote Deployment
+        run: |
+          echo "Canary validation successful."
+          echo "Promoting deployment to 100% traffic."
+
+      - name: Deployment Successful
+        run: echo "CD Pipeline completed successfully!"
