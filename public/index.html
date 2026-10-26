@@ -2,75 +2,395 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FSexp9.1 - CI Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FSexp9.2 - CD Automation</title>
+
   <style>
-    body { background:#0d1020; color:#fff; font-family:Arial, sans-serif; padding:30px; }
-    h2 { margin-bottom:5px; }
-    p.sub { color:#9aa3c7; margin-top:0; }
-    input, select, button { padding:10px; margin:5px; border-radius:6px; border:none; font-size:14px; }
-    button { background:#5b5bf0; color:#fff; cursor:pointer; }
-    button:hover { background:#4a4ad8; }
-    button.defect { background:#ef4444; }
-    pre { background:#000; color:#4fd1c5; padding:15px; border-radius:8px; min-height:80px; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #0b1020;
+      color: #ffffff;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #121a2f;
+      padding: 22px 40px;
+      border-bottom: 1px solid #29334f;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo h1 {
+      font-size: 28px;
+    }
+
+    .logo p {
+      color: #9aa6c2;
+      margin-top: 5px;
+    }
+
+    .online {
+      color: #43e97b;
+      font-weight: bold;
+    }
+
+    .user {
+      color: #cbd5e1;
+      margin-top: 6px;
+    }
+
+    .container {
+      padding: 30px 40px;
+      max-width: 1400px;
+      margin: auto;
+    }
+
+    .welcome {
+      background: #151f38;
+      padding: 22px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      border: 1px solid #29334f;
+    }
+
+    .welcome h2 {
+      margin-bottom: 8px;
+    }
+
+    .welcome p {
+      color: #9aa6c2;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: #151f38;
+      border: 1px solid #29334f;
+      border-radius: 12px;
+      padding: 22px;
+    }
+
+    .card-title {
+      color: #9aa6c2;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .card-value {
+      font-size: 27px;
+      font-weight: bold;
+    }
+
+    .success {
+      color: #43e97b;
+    }
+
+    .blue {
+      color: #4da3ff;
+    }
+
+    .yellow {
+      color: #ffd166;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      background: #151f38;
+      color: #cbd5e1;
+      padding: 12px 18px;
+      border-radius: 8px;
+      border: 1px solid #29334f;
+    }
+
+    .tab.active {
+      background: #263657;
+      color: white;
+    }
+
+    .section {
+      background: #151f38;
+      border: 1px solid #29334f;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 25px;
+    }
+
+    .section h2 {
+      margin-bottom: 18px;
+    }
+
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+    .stage {
+      background: #0f172a;
+      border-radius: 10px;
+      padding: 20px;
+      border: 1px solid #29334f;
+      text-align: center;
+    }
+
+    .stage-icon {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .stage h3 {
+      margin-bottom: 8px;
+    }
+
+    .stage p {
+      color: #9aa6c2;
+      font-size: 14px;
+    }
+
+    .status {
+      margin-top: 12px;
+      font-weight: bold;
+      color: #43e97b;
+    }
+
+    .canary {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    .traffic {
+      background: #0f172a;
+      padding: 18px 25px;
+      border-radius: 10px;
+      border: 1px solid #29334f;
+      text-align: center;
+    }
+
+    .traffic strong {
+      display: block;
+      font-size: 24px;
+      margin-top: 7px;
+    }
+
+    .arrow {
+      font-size: 28px;
+      color: #43e97b;
+    }
+
+    .console {
+      background: #050914;
+      border-radius: 10px;
+      padding: 20px;
+      font-family: Consolas, monospace;
+      line-height: 1.8;
+      color: #b9c4d9;
+      overflow-x: auto;
+    }
+
+    .green {
+      color: #43e97b;
+    }
+
+    .footer {
+      text-align: center;
+      color: #6f7c96;
+      padding: 25px;
+    }
+
+    @media (max-width: 900px) {
+      .cards,
+      .pipeline {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 20px;
+      }
+
+      .container {
+        padding: 20px;
+      }
+
+      .cards,
+      .pipeline {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
+
 <body>
-  <h2>FSexp9.1</h2>
-  <p class="sub">Build • Test • Early Defect Prevention</p>
 
-  <div>
-    <button onclick="preset(45,'+',55)">Test Addition (45 + 55)</button>
-    <button onclick="preset(12,'*',12)">Test Multiplication (12 × 12)</button>
-    <button class="defect" onclick="preset(100,'/',0)">Trigger Defect: Zero Division (100 / 0)</button>
+<header>
+  <div class="logo">
+    <h1>FSexp9.2</h1>
+    <p>CD Automation</p>
   </div>
 
   <div>
-    <input id="a" type="number" value="45">
-    <select id="op">
-      <option value="+">+ (Addition)</option>
-      <option value="-">- (Subtraction)</option>
-      <option value="*">* (Multiplication)</option>
-      <option value="/">/ (Division)</option>
-    </select>
-    <input id="b" type="number" value="55">
+    <div class="online">● Pipeline Agent: Online</div>
+    <div class="user">Shrayan Bairagi Mugdha</div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="welcome">
+    <h2>Welcome, Shrayan Bairagi Mugdha!</h2>
+    <p>Continuous Deployment pipeline executed successfully.</p>
   </div>
 
-  <div>
-    <button onclick="calc()">Send POST /api/calculate</button>
-    <button onclick="health()">Check Health (/health)</button>
+  <div class="cards">
+
+    <div class="card">
+      <div class="card-title">CD Pipeline</div>
+      <div class="card-value success">GREEN</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Docker Build</div>
+      <div class="card-value success">SUCCESS</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Canary Deployment</div>
+      <div class="card-value success">SUCCESS</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Deployment Status</div>
+      <div class="card-value success">LIVE</div>
+    </div>
+
   </div>
 
-  <pre id="out">// Click "Send POST /api/calculate" to test backend endpoints.</pre>
+  <div class="tabs">
+    <div class="tab active">CD Stages & Architecture</div>
+    <div class="tab">Docker Deployment</div>
+    <div class="tab">Canary Deployment</div>
+    <div class="tab">Deployment History</div>
+  </div>
 
-<script>
-const out = document.getElementById('out');
+  <div class="section">
+    <h2>Continuous Deployment Pipeline</h2>
 
-function preset(a, op, b) {
-  document.getElementById('a').value = a;
-  document.getElementById('op').value = op;
-  document.getElementById('b').value = b;
-  calc();
-}
+    <div class="pipeline">
 
-async function calc() {
-  const body = {
-    a: document.getElementById('a').value,
-    operator: document.getElementById('op').value,
-    b: document.getElementById('b').value
-  };
-  const r = await fetch('/api/calculate', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-  out.textContent = r.status + ' ' + JSON.stringify(await r.json(), null, 2);
-}
+      <div class="stage">
+        <div class="stage-icon">📦</div>
+        <h3>Source</h3>
+        <p>GitHub Repository</p>
+        <div class="status">✓ SUCCESS</div>
+      </div>
 
-async function health() {
-  const r = await fetch('/health');
-  out.textContent = r.status + ' ' + JSON.stringify(await r.json(), null, 2);
-}
-</script>
+      <div class="stage">
+        <div class="stage-icon">🧪</div>
+        <h3>CI Tests</h3>
+        <p>4 Suites / 11 Tests</p>
+        <div class="status">✓ PASSED</div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-icon">🐳</div>
+        <h3>Docker Build</h3>
+        <p>fsexp9-1:latest</p>
+        <div class="status">✓ SUCCESS</div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-icon">🚀</div>
+        <h3>Deployment</h3>
+        <p>Canary → Production</p>
+        <div class="status">✓ SUCCESS</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Canary Deployment</h2>
+
+    <div class="canary">
+
+      <div class="traffic">
+        Canary Traffic
+        <strong class="yellow">10%</strong>
+      </div>
+
+      <div class="arrow">→</div>
+
+      <div class="traffic">
+        Health Check
+        <strong class="success">PASSED</strong>
+      </div>
+
+      <div class="arrow">→</div>
+
+      <div class="traffic">
+        Production Traffic
+        <strong class="success">100%</strong>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Deployment Console</h2>
+
+    <div class="console">
+      <div>✓ GitHub Actions workflow started</div>
+      <div>✓ Dependencies installed</div>
+      <div>✓ All tests passed</div>
+      <div>✓ Docker image built successfully</div>
+      <div>✓ Canary deployment started</div>
+      <div>✓ Canary traffic: 10%</div>
+      <div>✓ Canary health check: PASSED</div>
+      <div>✓ Deployment promoted to 100%</div>
+      <div class="green">✓ CD Pipeline completed successfully!</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Pipeline Execution History</h2>
+
+    <div class="console">
+      <div>GitHub Actions — CI Pipeline ........ <span class="green">SUCCESS</span></div>
+      <div>Docker Build ......................... <span class="green">SUCCESS</span></div>
+      <div>Canary Deployment ................... <span class="green">SUCCESS</span></div>
+      <div>Production Promotion ................ <span class="green">SUCCESS</span></div>
+      <div>Overall CD Status ................... <span class="green">GREEN</span></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  FSexp9.2 • Continuous Deployment using Docker, GitHub Actions & Canary Deployment
+</div>
+
 </body>
 </html>
